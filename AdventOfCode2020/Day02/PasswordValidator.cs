@@ -58,12 +58,32 @@ namespace AdventOfCode2020.Day02
                 && count <= passwordWithPolicy.MaxOccurences;
         }
 
+        public int Part2()
+        {
+            return _passwordPolicies.Count(IsValidPart2);
+        }
+
+        private bool IsValidPart2(PasswordWithPolicy passwordWithPolicy)
+        {
+            var passwordArray = passwordWithPolicy.Password.ToCharArray();
+            var char1 = passwordArray[passwordWithPolicy.Position1 - 1];
+            var char2 = passwordArray[passwordWithPolicy.Position2 - 1];
+
+            var char1MatchCount = char1 == passwordWithPolicy.RequiredCharacter ? 1 : 0;
+            var char2MatchCount = char2 == passwordWithPolicy.RequiredCharacter ? 1 : 0;
+
+            return char1MatchCount + char2MatchCount == 1;
+        }
+
         private class PasswordWithPolicy
         {
             public string Password { get; set; }
             public char RequiredCharacter { get; set; }
             public int MinOccurences { get; set; }
             public int MaxOccurences { get; set; }
+
+            public int Position1 => MinOccurences;
+            public int Position2 => MaxOccurences;
         }
     }
 }

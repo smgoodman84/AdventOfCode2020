@@ -22,7 +22,7 @@ namespace AdventOfCode2020.Day01
             return new ExpenseReport(expenses);
         }
 
-        public int GetResult()
+        public int Part1()
         {
             var sumToFind = 2020;
 
@@ -37,7 +37,7 @@ namespace AdventOfCode2020.Day01
             return requiredItem * otherItem;
         }
 
-        public int GetPart2Result()
+        public int Part2()
         {
             var sumToFind = 2020;
 
