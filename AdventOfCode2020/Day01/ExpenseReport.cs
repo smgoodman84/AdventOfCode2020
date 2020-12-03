@@ -5,8 +5,10 @@ using System.Linq;
 
 namespace AdventOfCode2020.Day01
 {
-    public class ExpenseReport
+    public class ExpenseReport : IDay
     {
+        public int DayNumber => 1;
+
         private IEnumerable<int> _expenses;
         public ExpenseReport(IEnumerable<int> expenses)
         {
@@ -22,7 +24,7 @@ namespace AdventOfCode2020.Day01
             return new ExpenseReport(expenses);
         }
 
-        public int Part1()
+        public string Part1()
         {
             var sumToFind = 2020;
 
@@ -34,10 +36,10 @@ namespace AdventOfCode2020.Day01
 
             var otherItem = sumToFind - requiredItem;
 
-            return requiredItem * otherItem;
+            return (requiredItem * otherItem).ToString();
         }
 
-        public int Part2()
+        public string Part2()
         {
             var sumToFind = 2020;
 
@@ -49,7 +51,7 @@ namespace AdventOfCode2020.Day01
                 var subResult = FindSumItems(subSumToFind, subExpenses);
                 if (subResult.Found)
                 {
-                    return subResult.Item1 * subResult.Item2 * expense;
+                    return (subResult.Item1 * subResult.Item2 * expense).ToString();
                 }
             }
 

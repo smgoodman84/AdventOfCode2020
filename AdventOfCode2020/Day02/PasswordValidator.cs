@@ -4,8 +4,10 @@ using System.Linq;
 
 namespace AdventOfCode2020.Day02
 {
-    public class PasswordValidator
+    public class PasswordValidator : IDay
     {
+        public int DayNumber => 2;
+
         private IEnumerable<PasswordWithPolicy> _passwordPolicies;
         private PasswordValidator(IEnumerable<PasswordWithPolicy> passwordPolicies)
         {
@@ -44,9 +46,9 @@ namespace AdventOfCode2020.Day02
             };
         }
 
-        public int Part1()
+        public string Part1()
         {
-            return _passwordPolicies.Count(IsValid);
+            return _passwordPolicies.Count(IsValid).ToString();
         }
 
         private bool IsValid(PasswordWithPolicy passwordWithPolicy)
@@ -58,9 +60,9 @@ namespace AdventOfCode2020.Day02
                 && count <= passwordWithPolicy.MaxOccurences;
         }
 
-        public int Part2()
+        public string Part2()
         {
-            return _passwordPolicies.Count(IsValidPart2);
+            return _passwordPolicies.Count(IsValidPart2).ToString();
         }
 
         private bool IsValidPart2(PasswordWithPolicy passwordWithPolicy)

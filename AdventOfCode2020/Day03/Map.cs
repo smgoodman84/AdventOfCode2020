@@ -4,8 +4,10 @@ using System.Linq;
 
 namespace AdventOfCode2020.Day03
 {
-    public class Map
+    public class Map : IDay
     {
+        public int DayNumber => 3;
+
         private const char OpenSquare = '.';
         private const char Tree = '#';
 
@@ -56,9 +58,9 @@ namespace AdventOfCode2020.Day03
             return treeCount;
         }
 
-        public int Part1() => CountTrees(3, 1);
+        public string Part1() => CountTrees(3, 1).ToString();
 
-        public decimal Part2()
+        public string Part2()
         {
             var treeCounts = new List<decimal>
             {
@@ -75,7 +77,7 @@ namespace AdventOfCode2020.Day03
                 result *= treeCount;
             }
 
-            return result;
+            return result.ToString();
         }
 
         private class MapLine
