@@ -1,6 +1,7 @@
 ﻿using System;
 using AdventOfCode2020.Day01;
 using AdventOfCode2020.Day02;
+using AdventOfCode2020.Day03;
 
 namespace AdventOfCode2020
 {
@@ -10,6 +11,7 @@ namespace AdventOfCode2020
         {
             Day1();
             Day2();
+            Day3();
         }
 
         static void Day1()
@@ -32,6 +34,14 @@ namespace AdventOfCode2020
 
             var day2Part2 = day2.Part2();
             Console.WriteLine($"Day 2 Part 2: {day2Part2}");
+        }
+
+        static void Day3()
+        {
+            var day3 = Map.LoadFromFile("Day03/Map.txt");
+
+            var day3Part1 = day3.Part1();
+            Console.WriteLine($"Day 3 Part 1: {day3Part1}");
         }
     }
 }
