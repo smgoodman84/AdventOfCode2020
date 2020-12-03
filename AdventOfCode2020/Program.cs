@@ -42,6 +42,9 @@ namespace AdventOfCode2020
 
             var day3Part1 = day3.Part1();
             Console.WriteLine($"Day 3 Part 1: {day3Part1}");
+
+            var day3Part2 = day3.Part2();
+            Console.WriteLine($"Day 3 Part 2: {day3Part2}");
         }
     }
 }

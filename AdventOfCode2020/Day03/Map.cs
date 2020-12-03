@@ -58,6 +58,26 @@ namespace AdventOfCode2020.Day03
 
         public int Part1() => CountTrees(3, 1);
 
+        public decimal Part2()
+        {
+            var treeCounts = new List<decimal>
+            {
+                CountTrees(1, 1),
+                CountTrees(3, 1),
+                CountTrees(5, 1),
+                CountTrees(7, 1),
+                CountTrees(1, 2)
+            };
+
+            decimal result = 1;
+            foreach (var treeCount in treeCounts)
+            {
+                result *= treeCount;
+            }
+
+            return result;
+        }
+
         private class MapLine
         {
             private char[] _line;
