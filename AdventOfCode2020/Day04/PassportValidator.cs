@@ -94,12 +94,176 @@ namespace AdventOfCode2020.Day04
                 && passport.PassportId != null;
         }
 
+        private HashSet<string> _validEyeColours = new HashSet<string>(new List<string>
+        {
+            "amb", "blu", "brn", "gry", "grn", "hzl", "oth"
+        });
+
+        private bool IsProperlyValidPassport(Passport passport)
+        {
+            if (passport.BirthYear == null)
+            {
+                return false;
+            }
+
+            if (passport.BirthYear < 1920)
+            {
+                return false;
+            }
+
+            if (passport.BirthYear > 2002)
+            {
+                return false;
+            }
+
+            if (passport.IssueYear == null)
+            {
+                return false;
+            }
+
+            if (passport.IssueYear < 2010)
+            {
+                return false;
+            }
+
+            if (passport.IssueYear > 2020)
+            {
+                return false;
+            }
+
+            if (passport.ExpirationYear == null)
+            {
+                return false;
+            }
+
+            if (passport.ExpirationYear < 2020)
+            {
+                return false;
+            }
+
+            if (passport.ExpirationYear > 2030)
+            {
+                return false;
+            }
+
+            if (passport.Height == null)
+            {
+                return false;
+            }
+
+            if (!ValidHeight(passport.Height))
+            {
+                return false;
+            }
+
+            if (passport.HairColour == null)
+            {
+                return false;
+            }
+
+            if (!ValidHairColour(passport.HairColour))
+            {
+                return false;
+            }
+
+            if (passport.EyeColour == null)
+            {
+                return false;
+            }
+
+            if (!_validEyeColours.Contains(passport.EyeColour))
+            {
+                return false;
+            }
+
+            if (passport.PassportId == null)
+            {
+                return false;
+            }
+
+            if (passport.PassportId.Length != 9)
+            {
+                return false;
+            }
+
+            if (!passport.PassportId.All(c => c >= '0' && c <= '9'))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool ValidHairColour(string hairColour)
+        {
+            if (hairColour.Length != 7)
+            {
+                return false;
+            }
+
+            if (!hairColour.StartsWith('#'))
+            {
+                return false;
+            }
+
+            var colourCode = hairColour.Substring(1);
+            if (!colourCode.All(IsValidHexDigit))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool IsValidHexDigit(char digit)
+        {
+            return (digit >= '0' && digit <= '9')
+                || (digit >= 'a' && digit <= 'f')
+                || (digit >= 'A' && digit <= 'F');
+        }
+
+        private bool ValidHeight(string height)
+        {
+            if (height.EndsWith("cm"))
+            {
+                var cms = int.Parse(height.Substring(0, height.Length - 2));
+
+                if (cms < 150)
+                {
+                    return false;
+                }
+
+                if (cms > 193)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            if (height.EndsWith("in"))
+            {
+                var ins = int.Parse(height.Substring(0, height.Length - 2));
+
+                if (ins < 59)
+                {
+                    return false;
+                }
+
+                if (ins > 76)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
         public string Part1() => _passports.Count(IsValidPassport).ToString();
 
-        public string Part2()
-        {
-            return string.Empty;
-        }
+        public string Part2() => _passports.Count(IsProperlyValidPassport).ToString();
 
         private class Passport
         {
