@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AdventOfCode2020.Day01;
 using AdventOfCode2020.Day02;
 using AdventOfCode2020.Day03;
+using AdventOfCode2020.Day04;
 
 namespace AdventOfCode2020
 {
@@ -14,7 +15,8 @@ namespace AdventOfCode2020
             {
                 ExpenseReport.LoadFromFile("Day01/ExpenseReport.txt"),
                 PasswordValidator.LoadFromFile("Day02/Passwords.txt"),
-                Map.LoadFromFile("Day03/Map.txt")
+                Map.LoadFromFile("Day03/Map.txt"),
+                PassportValidator.LoadFromFile("day04/PassportData.txt")
             };
 
             foreach (var day in days)
