@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -32,7 +33,16 @@ namespace AdventOfCode2020.Day05
 
         public string Part2()
         {
-            return string.Empty;
+            var seatRange = Enumerable.Range(0, _seats.Max(s => s.SeatId));
+            var allSeats = new HashSet<int>(_seats.Select(s => s.SeatId));
+
+            var missingSeats = seatRange.Where(s => !allSeats.Contains(s)).ToList();
+
+            var mySeat = missingSeats.FirstOrDefault(s =>
+                !missingSeats.Contains(s + 1) && !missingSeats.Contains(s - 1)
+            );
+
+            return mySeat.ToString();
         }
 
         private class Seat
