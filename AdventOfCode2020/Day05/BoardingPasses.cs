@@ -8,6 +8,8 @@ namespace AdventOfCode2020.Day05
     public class BoardingPasses : IDay
     {
         public int DayNumber => 5;
+        public string ValidatedPart1 => "890";
+        public string ValidatedPart2 => "651";
 
         private Seat[] _seats;
         private BoardingPasses(Seat[] seats)

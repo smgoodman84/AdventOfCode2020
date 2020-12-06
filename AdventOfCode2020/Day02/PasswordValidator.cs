@@ -7,6 +7,8 @@ namespace AdventOfCode2020.Day02
     public class PasswordValidator : IDay
     {
         public int DayNumber => 2;
+        public string ValidatedPart1 => "564";
+        public string ValidatedPart2 => "325";
 
         private IEnumerable<PasswordWithPolicy> _passwordPolicies;
         private PasswordValidator(IEnumerable<PasswordWithPolicy> passwordPolicies)

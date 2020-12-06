@@ -8,6 +8,8 @@ namespace AdventOfCode2020.Day06
     public class Declerations : IDay
     {
         public int DayNumber => 6;
+        public string ValidatedPart1 => "6630";
+        public string ValidatedPart2 => "3437";
 
         private List<GroupDecleration> _groupDeclerations;
         private Declerations(List<GroupDecleration> groupDeclerations)
@@ -17,28 +19,9 @@ namespace AdventOfCode2020.Day06
 
         public static Declerations LoadFromFile(string filename)
         {
-            var groupDeclerations = new List<GroupDecleration>();
-            var lines = File.ReadAllLines(filename);
-
-            var currentLines = new List<string>();
-            foreach (var line in lines)
-            {
-                if (string.IsNullOrWhiteSpace(line))
-                {
-                    groupDeclerations.Add(CreateGroupDecleration(currentLines));
-                    currentLines = new List<string>();
-                }
-                else
-                {
-                    currentLines.Add(line);
-                }
-            }
-
-            if (currentLines.Any())
-            {
-                groupDeclerations.Add(CreateGroupDecleration(currentLines));
-            }
-
+            var groupDeclerations = GroupedLineFileReader.ReadGroups(filename)
+                .Select(CreateGroupDecleration)
+                .ToList();
 
             return new Declerations(groupDeclerations);
         }

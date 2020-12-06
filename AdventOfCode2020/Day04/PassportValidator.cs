@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace AdventOfCode2020.Day04
@@ -8,6 +6,8 @@ namespace AdventOfCode2020.Day04
     public class PassportValidator : IDay
     {
         public int DayNumber => 4;
+        public string ValidatedPart1 => "192";
+        public string ValidatedPart2 => "101";
 
         private List<Passport> _passports;
         private PassportValidator(List<Passport> passports)
@@ -17,26 +17,9 @@ namespace AdventOfCode2020.Day04
 
         public static PassportValidator LoadFromFile(string filename)
         {
-            var passports = new List<Passport>();
-            var lines = File.ReadAllLines(filename);
-
-            var currentLines = new List<string>();
-            foreach (var line in lines)
-            {
-                if (string.IsNullOrWhiteSpace(line))
-                {
-                    passports.Add(CreatePassport(currentLines));
-                    currentLines = new List<string>();
-                }
-
-                currentLines.Add(line);
-            }
-
-            if (currentLines.Any())
-            {
-                passports.Add(CreatePassport(currentLines));
-            }
-
+            var passports = GroupedLineFileReader.ReadGroups(filename)
+                .Select(CreatePassport)
+                .ToList();
 
             return new PassportValidator(passports);
         }

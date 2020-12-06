@@ -7,6 +7,8 @@ namespace AdventOfCode2020.Day03
     public class Map : IDay
     {
         public int DayNumber => 3;
+        public string ValidatedPart1 => "203";
+        public string ValidatedPart2 => "3316272960";
 
         private const char OpenSquare = '.';
         private const char Tree = '#';

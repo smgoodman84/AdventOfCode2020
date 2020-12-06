@@ -8,6 +8,8 @@ namespace AdventOfCode2020.Day01
     public class ExpenseReport : IDay
     {
         public int DayNumber => 1;
+        public string ValidatedPart1 => "972576";
+        public string ValidatedPart2 => "199300880";
 
         private IEnumerable<int> _expenses;
         public ExpenseReport(IEnumerable<int> expenses)
