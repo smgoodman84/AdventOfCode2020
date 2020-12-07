@@ -6,6 +6,7 @@ using AdventOfCode2020.Day03;
 using AdventOfCode2020.Day04;
 using AdventOfCode2020.Day05;
 using AdventOfCode2020.Day06;
+using AdventOfCode2020.Day07;
 
 namespace AdventOfCode2020
 {
@@ -20,7 +21,8 @@ namespace AdventOfCode2020
                 Map.LoadFromFile("Day03/Map.txt"),
                 PassportValidator.LoadFromFile("Day04/PassportData.txt"),
                 BoardingPasses.LoadFromFile("Day05/Seats.txt"),
-                Declerations.LoadFromFile("Day06/Declerations.txt")
+                Declerations.LoadFromFile("Day06/Declerations.txt"),
+                LuggageRules.LoadFromFile("Day07/LuggageRules.txt")
             };
 
             var invalidCount = 0;
