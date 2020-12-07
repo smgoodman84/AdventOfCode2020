@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -9,9 +8,10 @@ namespace AdventOfCode2020.Day07
     {
         public int DayNumber => 7;
         public string ValidatedPart1 => "316";
-        public string ValidatedPart2 => string.Empty;
+        public string ValidatedPart2 => "11310";
 
         private Dictionary<string, LuggageRule> _luggageRules;
+        private Dictionary<string, int> _containCount = new Dictionary<string, int>();
         private Dictionary<string, List<string>> _canGoIn;
         private LuggageRules(Dictionary<string, LuggageRule> luggageRules)
         {
@@ -66,7 +66,33 @@ namespace AdventOfCode2020.Day07
 
         public string Part2()
         {
-            return string.Empty;
+            var result = GetContainCount("shiny gold");
+
+            return result.ToString();
+        }
+
+        private int GetContainCount(string colour)
+        {
+            var luggageRule = _luggageRules[colour];
+
+            var total = 0;
+
+            foreach (var bag in luggageRule.MustContain)
+            {
+                total += bag.Value * (GetCachedContainCount(bag.Key) + 1);
+            }
+
+            return total;
+        }
+
+        private int GetCachedContainCount(string colour)
+        {
+            if (!_containCount.ContainsKey(colour))
+            {
+                _containCount[colour] = GetContainCount(colour);
+            }
+
+            return _containCount[colour];
         }
 
         private class LuggageRule
