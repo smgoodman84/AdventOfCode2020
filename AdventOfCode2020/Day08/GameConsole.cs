@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -9,7 +8,7 @@ namespace AdventOfCode2020.Day08
     {
         public int DayNumber => 8;
         public string ValidatedPart1 => "1420";
-        public string ValidatedPart2 => string.Empty;
+        public string ValidatedPart2 => "1245";
 
         private Instruction[] _program;
         private int _instructionPointer;
@@ -81,7 +80,46 @@ namespace AdventOfCode2020.Day08
 
         public string Part2()
         {
-            return string.Empty;
+            var flippedInstruction = 0;
+            Flip(flippedInstruction);
+
+            while (!Terminates())
+            {
+                Reset();
+                Flip(flippedInstruction);
+                flippedInstruction += 1;
+                Flip(flippedInstruction);
+            }
+            return _accumulator.ToString();
+        }
+
+        private void Flip(int instructionNumber)
+        {
+            var instruction = _program[instructionNumber];
+            switch (instruction.Operation)
+            {
+                case "jmp":
+                    instruction.Operation = "nop";
+                    break;
+                case "nop":
+                    instruction.Operation = "jmp";
+                    break;
+            }
+        }
+
+        private bool Terminates()
+        {
+            var executed = new HashSet<int>();
+            while (!executed.Contains(_instructionPointer))
+            {
+                executed.Add(_instructionPointer);
+                ExecuteInstruction();
+                if (_instructionPointer >= _program.Length)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private class Instruction
