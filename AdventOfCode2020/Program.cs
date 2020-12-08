@@ -7,6 +7,7 @@ using AdventOfCode2020.Day04;
 using AdventOfCode2020.Day05;
 using AdventOfCode2020.Day06;
 using AdventOfCode2020.Day07;
+using AdventOfCode2020.Day08;
 
 namespace AdventOfCode2020
 {
@@ -22,7 +23,8 @@ namespace AdventOfCode2020
                 PassportValidator.LoadFromFile("Day04/PassportData.txt"),
                 BoardingPasses.LoadFromFile("Day05/Seats.txt"),
                 Declerations.LoadFromFile("Day06/Declerations.txt"),
-                LuggageRules.LoadFromFile("Day07/LuggageRules.txt")
+                LuggageRules.LoadFromFile("Day07/LuggageRules.txt"),
+                GameConsole.LoadFromFile("Day08/BootCode.txt")
             };
 
             var invalidCount = 0;
@@ -43,8 +45,8 @@ namespace AdventOfCode2020
                 var part1InvalidString = part1Invalid ? " INVALID" : "";
                 var part2InvalidString = part2Invalid ? " INVALID" : "";
 
-                Console.WriteLine($"Day {day.DayNumber} Part 1: {day.Part1()}{part1InvalidString}");
-                Console.WriteLine($"Day {day.DayNumber} Part 2: {day.Part2()}{part2InvalidString}");
+                Console.WriteLine($"Day {day.DayNumber} Part 1: {part1}{part1InvalidString}");
+                Console.WriteLine($"Day {day.DayNumber} Part 2: {part2}{part2InvalidString}");
             }
 
             Console.WriteLine($"{invalidCount} INVALID Results");

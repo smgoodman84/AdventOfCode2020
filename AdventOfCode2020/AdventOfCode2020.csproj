@@ -13,6 +13,7 @@
     <Folder Include="Day05\" />
     <Folder Include="Day06\" />
     <Folder Include="Day07\" />
+    <Folder Include="Day08\" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Day01\ExpenseReport.txt">
@@ -34,6 +35,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Day07\LuggageRules.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Day08\BootCode.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
