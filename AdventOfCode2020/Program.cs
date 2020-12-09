@@ -8,6 +8,7 @@ using AdventOfCode2020.Day05;
 using AdventOfCode2020.Day06;
 using AdventOfCode2020.Day07;
 using AdventOfCode2020.Day08;
+using AdventOfCode2020.Day09;
 
 namespace AdventOfCode2020
 {
@@ -24,7 +25,8 @@ namespace AdventOfCode2020
                 BoardingPasses.LoadFromFile("Day05/Seats.txt"),
                 Declerations.LoadFromFile("Day06/Declerations.txt"),
                 LuggageRules.LoadFromFile("Day07/LuggageRules.txt"),
-                GameConsole.LoadFromFile("Day08/BootCode.txt")
+                GameConsole.LoadFromFile("Day08/BootCode.txt"),
+                AdditionSystem.LoadFromFile("Day09/Data.txt")
             };
 
             var invalidCount = 0;
