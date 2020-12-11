@@ -9,7 +9,7 @@ namespace AdventOfCode2020.Day11
     {
         public int DayNumber => 11;
         public string ValidatedPart1 => "2468";
-        public string ValidatedPart2 => string.Empty;
+        public string ValidatedPart2 => "2214";
 
         private readonly char[][] _initialLayout;
 
@@ -27,7 +27,12 @@ namespace AdventOfCode2020.Day11
             return new SeatingLayout(lines);
         }
 
-        public string Part1()
+        public string Part1() => FindOccupiedSeatEquilibrium(4, CountOccupiedNeighbours).ToString();
+
+        public string Part2() => FindOccupiedSeatEquilibrium(5, CountVisibleNeighbours).ToString();
+
+
+        private int FindOccupiedSeatEquilibrium(int maxTolerableNeighbours, Func<char[][], int, int, int> neighbourCounter)
         {
             var currentGeneration = new Generation
             {
@@ -36,22 +41,16 @@ namespace AdventOfCode2020.Day11
 
             do
             {
-                currentGeneration = GetNextGeneration(currentGeneration);
+                currentGeneration = GetNextGeneration(currentGeneration, maxTolerableNeighbours, neighbourCounter);
                 // Console.WriteLine(currentGeneration);
             }
             while (currentGeneration.AnyChange);
 
             return currentGeneration.Layout
-                .Sum(row => row.Count(x => x == '#'))
-                .ToString();
+                .Sum(row => row.Count(x => x == '#'));
         }
 
-        public string Part2()
-        {
-            return string.Empty;
-        }
-
-        private Generation GetNextGeneration(Generation currentGeneration)
+        private Generation GetNextGeneration(Generation currentGeneration, int maxTolerableNeighbours, Func<char[][], int, int, int> neighbourCounter)
         {
             var layout = currentGeneration.Layout;
 
@@ -66,12 +65,12 @@ namespace AdventOfCode2020.Day11
                 for (var x = 0; x < width; x++)
                 {
                     var currentState = layout[y][x];
-                    var count = CountOccupiedNeighbours(layout, x, y);
+                    var count = neighbourCounter(layout, x, y);
                     var nextState = '.';
                     switch (currentState)
                     {
                         case '#':
-                            nextState = count >= 4 ? 'L' : '#';
+                            nextState = count >= maxTolerableNeighbours ? 'L' : '#';
                             break;
                         case 'L':
                             nextState = count == 0 ? '#' : 'L';
@@ -107,6 +106,49 @@ namespace AdventOfCode2020.Day11
                 IsOccupied(layout, x+1, y),
                 IsOccupied(layout, x+1, y+1),
             }.Count(b => b);
+        }
+
+
+        private int CountVisibleNeighbours(char[][] layout, int x, int y)
+        {
+            return new List<bool>
+            {
+                IsVisibleOccupied(layout, x, y, -1, -1),
+                IsVisibleOccupied(layout, x, y, -1, 0),
+                IsVisibleOccupied(layout, x, y, -1, +1),
+                IsVisibleOccupied(layout, x, y, 0, -1),
+                IsVisibleOccupied(layout, x, y, 0, +1),
+                IsVisibleOccupied(layout, x, y, +1, -1),
+                IsVisibleOccupied(layout, x, y, +1, 0),
+                IsVisibleOccupied(layout, x, y, +1, +1),
+            }.Count(b => b);
+        }
+
+        private bool IsVisibleOccupied(char[][] layout, int x, int y, int dx, int dy)
+        {
+            while (true)
+            {
+                x += dx;
+                y += dy;
+
+
+                if (y < 0 || y >= layout.Length)
+                {
+                    return false;
+                }
+
+                if (x < 0 || x >= layout[0].Length)
+                {
+                    return false;
+                }
+
+                var c = layout[y][x];
+                switch (c)
+                {
+                    case 'L': return false;
+                    case '#': return true;
+                }
+            }
         }
 
         private bool IsOccupied(char[][] layout, int x, int y)
