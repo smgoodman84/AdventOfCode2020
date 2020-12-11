@@ -10,6 +10,7 @@ using AdventOfCode2020.Day07;
 using AdventOfCode2020.Day08;
 using AdventOfCode2020.Day09;
 using AdventOfCode2020.Day10;
+using AdventOfCode2020.Day11;
 
 namespace AdventOfCode2020
 {
@@ -28,7 +29,8 @@ namespace AdventOfCode2020
                 LuggageRules.LoadFromFile("Day07/LuggageRules.txt"),
                 GameConsole.LoadFromFile("Day08/BootCode.txt"),
                 AdditionSystem.LoadFromFile("Day09/Data.txt"),
-                JoltAdapters.LoadFromFile("Day10/JoltAdapters.txt")
+                JoltAdapters.LoadFromFile("Day10/JoltAdapters.txt"),
+                SeatingLayout.LoadFromFile("Day11/SeatingLayout.txt")
             };
 
             var invalidCount = 0;
