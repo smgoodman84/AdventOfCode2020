@@ -11,6 +11,7 @@ using AdventOfCode2020.Day08;
 using AdventOfCode2020.Day09;
 using AdventOfCode2020.Day10;
 using AdventOfCode2020.Day11;
+using AdventOfCode2020.Day12;
 
 namespace AdventOfCode2020
 {
@@ -30,7 +31,8 @@ namespace AdventOfCode2020
                 GameConsole.LoadFromFile("Day08/BootCode.txt"),
                 AdditionSystem.LoadFromFile("Day09/Data.txt"),
                 JoltAdapters.LoadFromFile("Day10/JoltAdapters.txt"),
-                SeatingLayout.LoadFromFile("Day11/SeatingLayout.txt")
+                SeatingLayout.LoadFromFile("Day11/SeatingLayout.txt"),
+                Navigation.LoadFromFile("Day12/NavigationInstructions.txt")
             };
 
             var invalidCount = 0;
