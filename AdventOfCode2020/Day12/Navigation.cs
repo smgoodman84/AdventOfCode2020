@@ -9,7 +9,7 @@ namespace AdventOfCode2020.Day12
     {
         public int DayNumber => 12;
         public string ValidatedPart1 => "1221";
-        public string ValidatedPart2 => string.Empty;
+        public string ValidatedPart2 => "59435";
 
         private readonly List<NavigationInstruction> _instructions;
 
@@ -95,7 +95,75 @@ namespace AdventOfCode2020.Day12
 
         public string Part2()
         {
-            return string.Empty;
+            var shipNorth = 0;
+            var shipEast = 0;
+            var waypointNorth = 1;
+            var waypointEast = 10;
+
+            foreach (var instruction in _instructions)
+            {
+                var direction = instruction.Instruction;
+
+                switch (direction)
+                {
+                    case 'F':
+                        shipNorth += waypointNorth * instruction.Distance;
+                        shipEast += waypointEast * instruction.Distance;
+                        break;
+                    case 'N':
+                        waypointNorth += instruction.Distance;
+                        break;
+                    case 'E':
+                        waypointEast += instruction.Distance;
+                        break;
+                    case 'S':
+                        waypointNorth -= instruction.Distance;
+                        break;
+                    case 'W':
+                        waypointEast -= instruction.Distance;
+                        break;
+                    case 'L':
+                        switch (instruction.Distance)
+                        {
+                            case 90:
+                                var originalNorth = waypointNorth;
+                                waypointNorth = waypointEast;
+                                waypointEast = originalNorth * -1;
+                                break;
+                            case 180:
+                                waypointNorth *= -1;
+                                waypointEast *= -1;
+                                break;
+                            case 270:
+                                var originalEast = waypointEast;
+                                waypointEast = waypointNorth;
+                                waypointNorth = originalEast * -1;
+                                break;
+                        }
+                        break;
+                    case 'R':
+                        switch (instruction.Distance)
+                        {
+                            case 90:
+                                var originalEast = waypointEast;
+                                waypointEast = waypointNorth;
+                                waypointNorth = originalEast * -1;
+                                break;
+                            case 180:
+                                waypointNorth *= -1;
+                                waypointEast *= -1;
+                                break;
+                            case 270:
+                                var originalNorth = waypointNorth;
+                                waypointNorth = waypointEast;
+                                waypointEast = originalNorth * -1;
+                                break;
+                        }
+                        break;
+                }
+            }
+
+            return (Math.Abs(shipNorth) + Math.Abs(shipEast)).ToString();
         }
 
         private class NavigationInstruction
