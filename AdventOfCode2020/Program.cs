@@ -13,6 +13,7 @@ using AdventOfCode2020.Day10;
 using AdventOfCode2020.Day11;
 using AdventOfCode2020.Day12;
 using AdventOfCode2020.Day13;
+using AdventOfCode2020.Day14;
 
 namespace AdventOfCode2020
 {
@@ -34,7 +35,8 @@ namespace AdventOfCode2020
                 JoltAdapters.LoadFromFile("Day10/JoltAdapters.txt"),
                 SeatingLayout.LoadFromFile("Day11/SeatingLayout.txt"),
                 Navigation.LoadFromFile("Day12/NavigationInstructions.txt"),
-                Buses.LoadFromFile("Day13/Buses.txt")
+                Buses.LoadFromFile("Day13/Buses.txt"),
+                DockingProgram.LoadFromFile("Day14/DockingProgram.txt")
             };
 
             var invalidCount = 0;
