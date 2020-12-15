@@ -14,6 +14,7 @@ using AdventOfCode2020.Day11;
 using AdventOfCode2020.Day12;
 using AdventOfCode2020.Day13;
 using AdventOfCode2020.Day14;
+using AdventOfCode2020.Day15;
 
 namespace AdventOfCode2020
 {
@@ -36,7 +37,8 @@ namespace AdventOfCode2020
                 SeatingLayout.LoadFromFile("Day11/SeatingLayout.txt"),
                 Navigation.LoadFromFile("Day12/NavigationInstructions.txt"),
                 Buses.LoadFromFile("Day13/Buses.txt"),
-                DockingProgram.LoadFromFile("Day14/DockingProgram.txt")
+                DockingProgram.LoadFromFile("Day14/DockingProgram.txt"),
+                MemoryGame.Create("15,12,0,14,3,1")
             };
 
             var invalidCount = 0;
