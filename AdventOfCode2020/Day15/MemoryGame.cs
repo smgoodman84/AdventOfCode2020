@@ -8,7 +8,7 @@ namespace AdventOfCode2020.Day15
     {
         public int DayNumber => 15;
         public string ValidatedPart1 => "249";
-        public string ValidatedPart2 => string.Empty;
+        public string ValidatedPart2 => "41687";
 
         private readonly List<int> _startingNumbers;
         public MemoryGame(string startingNumbers)
@@ -21,11 +21,14 @@ namespace AdventOfCode2020.Day15
 
         public static MemoryGame Create(string startingNumbers) => new MemoryGame(startingNumbers);
 
-        public string Part1()
+        public string Part1() => FindNthSpoken(2020).ToString();
+        public string Part2() => FindNthSpoken(30000000).ToString();
+
+        private int FindNthSpoken(int n)
         {
-            var count = 2020;
+            var count = n;
             var history = new History();
-            foreach(var startingNumber in _startingNumbers)
+            foreach (var startingNumber in _startingNumbers)
             {
                 history.Spoken(startingNumber);
                 count -= 1;
@@ -38,9 +41,8 @@ namespace AdventOfCode2020.Day15
                 count -= 1;
             }
 
-            return history.LastSpoken.ToString();
+            return history.LastSpoken.Value;
         }
-
 
         private class History
         {
@@ -94,11 +96,6 @@ namespace AdventOfCode2020.Day15
                 LastSpoken2 = LastSpoken;
                 LastSpoken = timeStamp;
             }
-        }
-
-        public string Part2()
-        {
-            return string.Empty;
         }
     }
 }
