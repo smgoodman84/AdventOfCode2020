@@ -9,7 +9,7 @@ namespace AdventOfCode2020.Day16
     {
         public int DayNumber => 16;
         public string ValidatedPart1 => "23925";
-        public string ValidatedPart2 => string.Empty;
+        public string ValidatedPart2 => "964373157673";
 
         private readonly List<FieldRanges> _fieldRanges;
         private readonly TicketData _yourTicket;
@@ -62,7 +62,56 @@ namespace AdventOfCode2020.Day16
 
         public string Part2()
         {
-            return string.Empty;
+            var validTickets = _nearbyTickets
+                .Where(t => !ValuesNotInRange(t).Any())
+                .ToList();
+
+            var ticketFieldCount = validTickets.First().Values.Length;
+
+            foreach(var ticket in validTickets)
+            {
+                for (var index = 0; index < ticketFieldCount; index++)
+                {
+                    foreach (var fieldRange in _fieldRanges)
+                    {
+                        fieldRange.InvalidateTicketIndexIfOutOfRange(index, ticket.Values[index]);
+                    }
+                }
+            }
+
+            foreach (var fieldRange in _fieldRanges)
+            {
+                fieldRange.SetPossibleIndexes(ticketFieldCount);
+            }
+
+            var allocatedIndexes = new Dictionary<string, int>();
+            foreach (var fieldRange in _fieldRanges.OrderBy(fr => fr.PossibleIndexes.Count))
+            {
+                var possibleUnallocatedIndexes = fieldRange
+                    .PossibleIndexes
+                    .Where(pi => !allocatedIndexes.Values.Contains(pi))
+                    .ToList();
+
+                if (possibleUnallocatedIndexes.Count == 1)
+                {
+                    allocatedIndexes.Add(fieldRange.FieldName, possibleUnallocatedIndexes.First());
+                }
+            }
+
+            // Console.WriteLine("*****************");
+            // Console.WriteLine("Allocated Indexes");
+            // Console.WriteLine("*****************");
+            long result = 1;
+            foreach (var kvp in allocatedIndexes)
+            {
+                if (kvp.Key.StartsWith("departure"))
+                {
+                    result *= _yourTicket.Values[kvp.Value];
+                }
+                // Console.WriteLine($"{kvp.Key}: {kvp.Value}");
+            }
+
+            return result.ToString();
         }
 
         private IEnumerable<int> ValuesNotInRange(TicketData ticket)
@@ -88,6 +137,27 @@ namespace AdventOfCode2020.Day16
                     .Split(" or ")
                     .Select(r => new IntRange(r))
                     .ToList();
+            }
+
+            public List<int> PossibleIndexes { get; set; }
+            public HashSet<int> InvalidatedTicketIndexes = new HashSet<int>();
+            public void InvalidateTicketIndexIfOutOfRange(int index, int value)
+            {
+                if (!InRange(value))
+                {
+                    InvalidatedTicketIndexes.Add(index);
+                }
+            }
+
+            public void SetPossibleIndexes(int maxIndex)
+            {
+                PossibleIndexes = Enumerable
+                    .Range(0, maxIndex)
+                    .Where(index => !InvalidatedTicketIndexes.Contains(index))
+                    .ToList();
+
+                // var possibleIndexString = string.Join(",", PossibleIndexes);
+                // Console.WriteLine($"Possible - {FieldName}: {possibleIndexString}");
             }
 
             public bool InRange(int value) => ValidRanges.Any(r => r.InRange(value));
