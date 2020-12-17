@@ -9,7 +9,7 @@ namespace AdventOfCode2020.Day14
     {
         public int DayNumber => 14;
         public string ValidatedPart1 => "13496669152158";
-        public string ValidatedPart2 => string.Empty;
+        public string ValidatedPart2 => "3278997609887";
 
         private readonly List<IStatement> _statements;
 
@@ -48,7 +48,10 @@ namespace AdventOfCode2020.Day14
 
         public string Part2()
         {
-            return string.Empty;
+            var state = new ProgramState(2);
+            state.Execute(_statements);
+            var result = state.MemorySum();
+            return result.ToString();
         }
 
         private interface IStatement
@@ -76,13 +79,13 @@ namespace AdventOfCode2020.Day14
 
         private class MemoryAssignment : IStatement
         {
-            private int _address;
+            private ulong _address;
             private ulong _value;
             public MemoryAssignment(string statement)
             {
                 var split = statement.Split("] = ");
                 _value = ulong.Parse(split[1]);
-                _address = int.Parse(split[0].Substring("mem[".Length));
+                _address = ulong.Parse(split[0].Substring("mem[".Length));
             }
 
             public void Execute(ProgramState programState)
@@ -94,7 +97,13 @@ namespace AdventOfCode2020.Day14
         private class ProgramState
         {
             private char[] _bitmask;
-            private Dictionary<int, ulong> _memory = new Dictionary<int, ulong>();
+            private Dictionary<ulong, ulong> _memory = new Dictionary<ulong, ulong>();
+            private readonly int _version;
+
+            public ProgramState(int version = 1)
+            {
+                _version = version;
+            }
 
             public ulong MemorySum()
             {
@@ -131,11 +140,67 @@ namespace AdventOfCode2020.Day14
                 return input;
             }
 
-            public void SetMemory(int address, ulong value)
+            public void SetMemory(ulong address, ulong value)
+            {
+                if (_version == 1)
+                {
+                    SetMemoryV1(address, value);
+                }
+                else
+                {
+                    SetMemoryV2(address, value);
+                }
+            }
+
+            public void SetMemoryV1(ulong address, ulong value)
             {
                 var maskedValue = ApplyBitMask(value);
 
                 _memory[address] = maskedValue;
+            }
+
+            public void SetMemoryV2(ulong address, ulong value)
+            {
+                var maskedAddresses = GetMaskedAddresses(address);
+                foreach(var maskedAddress in maskedAddresses)
+                {
+                    _memory[maskedAddress] = value;
+                }
+            }
+
+            private List<ulong> GetMaskedAddresses(ulong originalAddress)
+            {
+                var addresses = new List<ulong>()
+                {
+                    originalAddress
+                };
+
+                ulong orMask = 1;
+                foreach (var c in _bitmask)
+                {
+                    var updatedAddresses = new List<ulong>();
+                    foreach(var address in addresses)
+                    {
+                        switch (c)
+                        {
+                            case '0':
+                                updatedAddresses.Add(address);
+                                break;
+                            case '1':
+                                updatedAddresses.Add(address | orMask);
+                                break;
+                            case 'X':
+                                updatedAddresses.Add(address | orMask);
+                                updatedAddresses.Add(address & ~orMask);
+                                break;
+                        }
+                    }
+                    addresses = updatedAddresses;
+
+                    orMask <<= 1;
+                }
+
+                return addresses;
             }
 
             public void Execute(IEnumerable<IStatement> statements)
