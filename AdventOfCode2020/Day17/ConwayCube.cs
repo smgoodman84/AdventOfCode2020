@@ -7,19 +7,22 @@ namespace AdventOfCode2020.Day17
     {
         public int DayNumber => 17;
         public string ValidatedPart1 => "346";
-        public string ValidatedPart2 => string.Empty;
+        public string ValidatedPart2 => "1632";
 
         private const char Active = '#';
 
         private Space _space;
-        private ConwayCube(Space space)
+        private Space4D _space4D;
+        private ConwayCube(Space space, Space4D space4D)
         {
             _space = space;
+            _space4D = space4D;
         }
 
         public static ConwayCube LoadFromFile(string filename)
         {
             var space = new Space(0);
+            var space4D = new Space4D(0);
 
             var lines = File.ReadAllLines(filename);
 
@@ -30,21 +33,19 @@ namespace AdventOfCode2020.Day17
                 foreach (var c in line.ToCharArray())
                 {
                     space.SetLocation(x, y, 0, c == Active);
+                    space4D.SetLocation(x, y, 0, 0, c == Active);
                     x += 1;
                 }
                 y += 1;
             }
 
 
-            return new ConwayCube(space);
+            return new ConwayCube(space, space4D);
         }
 
         public string Part1() => GetGeneration(6).CountActive().ToString();
 
-        public string Part2()
-        {
-            return string.Empty;
-        }
+        public string Part2() => GetGeneration4D(6).CountActive().ToString();
 
         private Space GetGeneration(int generation)
         {
@@ -204,6 +205,203 @@ namespace AdventOfCode2020.Day17
                             if (_space[x][y][z])
                             {
                                 count += 1;
+                            }
+                        }
+                    }
+                }
+                return count;
+            }
+        }
+
+        private Space4D GetGeneration4D(int generation)
+        {
+            var space = _space4D;
+            while (space.Generation < generation)
+            {
+                space = space.GetNextGeneration();
+            }
+            return space;
+        }
+
+        private class Space4D
+        {
+            public int Generation { get; private set; }
+            private int _minX = 0;
+            private int _minY = 0;
+            private int _minZ = 0;
+            private int _minW = 0;
+            private int _maxX = 0;
+            private int _maxY = 0;
+            private int _maxZ = 0;
+            private int _maxW = 0;
+
+            private Dictionary<int, Dictionary<int, Dictionary<int, Dictionary<int, bool>>>> _space;
+            public Space4D(int generation)
+            {
+                Generation = generation;
+                _space = new Dictionary<int, Dictionary<int, Dictionary<int, Dictionary<int, bool>>>>();
+            }
+
+            public void SetLocation(int x, int y, int z, int w, bool active)
+            {
+                if (!_space.ContainsKey(x))
+                {
+                    _space.Add(x, new Dictionary<int, Dictionary<int, Dictionary<int, bool>>>());
+                }
+
+                if (!_space[x].ContainsKey(y))
+                {
+                    _space[x].Add(y, new Dictionary<int, Dictionary<int, bool>>());
+                }
+
+                if (!_space[x][y].ContainsKey(z))
+                {
+                    _space[x][y].Add(z, new Dictionary<int, bool>());
+                }
+
+                _space[x][y][z][w] = active;
+
+                if (active)
+                {
+                    if (x < _minX)
+                    {
+                        _minX = x;
+                    }
+
+                    if (x > _maxX)
+                    {
+                        _maxX = x;
+                    }
+
+                    if (y < _minY)
+                    {
+                        _minY = y;
+                    }
+
+                    if (y > _maxY)
+                    {
+                        _maxY = y;
+                    }
+
+                    if (z < _minZ)
+                    {
+                        _minZ = z;
+                    }
+
+                    if (z > _maxZ)
+                    {
+                        _maxZ = z;
+                    }
+
+                    if (w < _minW)
+                    {
+                        _minW = w;
+                    }
+
+                    if (w > _maxW)
+                    {
+                        _maxW = w;
+                    }
+                }
+            }
+
+            public bool GetLocation(int x, int y, int z, int w)
+            {
+                if (!_space.ContainsKey(x))
+                {
+                    return false;
+                }
+
+                if (!_space[x].ContainsKey(y))
+                {
+                    return false;
+                }
+
+                if (!_space[x][y].ContainsKey(z))
+                {
+                    return false;
+                }
+
+                if (!_space[x][y][z].ContainsKey(w))
+                {
+                    return false;
+                }
+
+                return _space[x][y][z][w];
+            }
+
+            public Space4D GetNextGeneration()
+            {
+                var nextGeneration = new Space4D(Generation + 1);
+                for (var x = _minX - 1; x <= _maxX + 1; x++)
+                {
+                    for (var y = _minY - 1; y <= _maxY + 1; y++)
+                    {
+                        for (var z = _minZ - 1; z <= _maxZ + 1; z++)
+                        {
+                            for (var w = _minW - 1; w <= _maxW + 1; w++)
+                            {
+                                var active = GetLocation(x, y, z, w);
+                                var count = CountNeighbours(x, y, z, w);
+                                var newState = GetNewState(active, count);
+                                nextGeneration.SetLocation(x, y, z, w, newState);
+                            }
+                        }
+                    }
+                }
+                return nextGeneration;
+            }
+
+            private int CountNeighbours(int x, int y, int z, int w)
+            {
+                var count = 0;
+                for (var currentX = x - 1; currentX <= x + 1; currentX++)
+                {
+                    for (var currentY = y - 1; currentY <= y + 1; currentY++)
+                    {
+                        for (var currentZ = z - 1; currentZ <= z + 1; currentZ++)
+                        {
+                            for (var currentW = w - 1; currentW <= w + 1; currentW++)
+                            {
+                                if (!(currentX == x && currentY == y && currentZ == z && currentW == w))
+                                {
+                                    if (GetLocation(currentX, currentY, currentZ, currentW))
+                                    {
+                                        count += 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return count;
+            }
+
+            private bool GetNewState(bool active, int count)
+            {
+                if (active)
+                {
+                    return count == 2 || count == 3;
+                }
+
+                return count == 3;
+            }
+
+            public int CountActive()
+            {
+                var count = 0;
+                foreach (var x in _space.Keys)
+                {
+                    foreach (var y in _space[x].Keys)
+                    {
+                        foreach (var z in _space[x][y].Keys)
+                        {
+                            foreach (var w in _space[x][y][z].Keys)
+                            {
+                                if (_space[x][y][z][w])
+                                {
+                                    count += 1;
+                                }
                             }
                         }
                     }
