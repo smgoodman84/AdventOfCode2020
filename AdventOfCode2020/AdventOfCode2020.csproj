@@ -24,6 +24,7 @@
     <Folder Include="Day16\" />
     <Folder Include="Day17\" />
     <Folder Include="Day18\" />
+    <Folder Include="Day20\" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Day01\ExpenseReport.txt">
@@ -75,6 +76,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Day18\Expressions.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Day20\Tiles.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

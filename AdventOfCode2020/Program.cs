@@ -18,6 +18,7 @@ using AdventOfCode2020.Day15;
 using AdventOfCode2020.Day16;
 using AdventOfCode2020.Day17;
 using AdventOfCode2020.Day18;
+using AdventOfCode2020.Day20;
 
 namespace AdventOfCode2020
 {
@@ -44,7 +45,8 @@ namespace AdventOfCode2020
                 MemoryGame.Create("15,12,0,14,3,1"),
                 TicketAnalyser.LoadFromFile("Day16/TicketData.txt"),
                 ConwayCube.LoadFromFile("Day17/ConwayCube.txt"),
-                OperationOrder.LoadFromFile("Day18/Expressions.txt")
+                OperationOrder.LoadFromFile("Day18/Expressions.txt"),
+                JurassicJigsaw.LoadFromFile("Day20/Tiles.txt")
             };
 
             var invalidCount = 0;
